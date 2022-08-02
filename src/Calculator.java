@@ -8,11 +8,8 @@ public class Calculator {
         str = str.replace(" ", "");
         str = str.toUpperCase();
         String operator = getOperator(str);
-        System.out.println("d3");
         String[] arguments = getStringArguments(str, operator);
-        System.out.println("d4");
         try {
-            System.out.println("d7");
             System.out.println(result(arguments, operator));
         } catch (Exception e) {
             System.out.println("Результат вывести не удалось :)");
@@ -26,12 +23,20 @@ public class Calculator {
         } catch (Exception e) {
             System.out.println("Аргументы найти не удалось");
         }
+        int len = arguments.length;
+        if (len > 2) {
+            arguments = new String[0];
+            try {
+                throw new Exception();
+            } catch (Exception e) {
+                System.out.println("формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+            }
+        }
         return arguments;
     }
 
     public static int getIntArgument (String argument) {
         Integer operand = null;
-        System.out.println("d5");
         try {
             operand = Integer.valueOf(argument);
         } catch (Exception e) {
@@ -45,24 +50,31 @@ public class Calculator {
                 System.out.println("Аргументы должны находится в промежутке от 0 до 10 включительно");
             }
         }
-        System.out.println("d2");
         return operand;
     }
 
     public static String getOperator(String str) {
         String operator = "";
+        int count = 0;
         boolean plus = str.contains("+");
         boolean minus = str.contains("-");
         boolean multi = str.contains("*");
         boolean devi = str.contains("/");
         if (plus) {
             operator = "+";
-        } else if (minus) {
+            count += 1;
+        }
+        if (minus) {
             operator = "-";
-        } else if (multi) {
+            count += 1;
+        }
+        if (multi) {
             operator = "*";
-        } else if (devi) {
+            count += 1;
+        }
+        if (devi) {
             operator = "/";
+            count += 1;
         }
         if (operator.equals("")) {
             try {
@@ -71,21 +83,16 @@ public class Calculator {
                 System.out.println("Строка не является математической операцией");
             }
         }
-        System.out.println("d1");
+        if (count > 1) {
+            try {
+                throw new Exception();
+            } catch (Exception e) {
+                System.out.println("формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+            }
+        }
         return operator;
     }
 
-    public static int checkRome (String argument) {
-        String[] rome = {"I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX", "X"};
-        int flag = 0;
-        for (int i = 0; i < 11; i++) {
-            if (Objects.equals(argument, rome[i])) {
-                flag = 1;
-                break;
-            }
-        }
-        return flag;
-    }
 
     public static int decoder (String argument) {
         int value = 0;
@@ -115,13 +122,10 @@ public class Calculator {
 
     public static int result (String[] arguments, String operator) {
         int result = 0;
-        System.out.println("d8");
         int flagFirst = decoder(arguments[0]);
         int flagSecond = decoder(arguments[1]);
-        System.out.println("d9");
         int firstOperand;
         int secondOperand;
-
         if (flagFirst > 0 && flagSecond > 0) {
             firstOperand = decoder(arguments[0]);
             secondOperand = decoder(arguments[1]);
