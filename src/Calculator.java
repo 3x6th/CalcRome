@@ -29,7 +29,7 @@ public class Calculator {
             try {
                 throw new Exception();
             } catch (Exception e) {
-                System.out.println("формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+                System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
             }
         }
         return arguments;
@@ -87,7 +87,7 @@ public class Calculator {
             try {
                 throw new Exception();
             } catch (Exception e) {
-                System.out.println("формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
+                System.out.println("Формат математической операции не удовлетворяет заданию - два операнда и один оператор (+, -, /, *)");
             }
         }
         return operator;
@@ -150,19 +150,19 @@ public class Calculator {
         int firstOperand = -1;
         int secondOperand = -1;
         if (flagFirst > 0 && flagSecond > 0) {
-            firstOperand = decoder(arguments[0]);
-            secondOperand = decoder(arguments[1]);
+            firstOperand = flagFirst;
+            secondOperand = flagSecond;
             if (firstOperand < secondOperand && operator.equals("-")) {
                 try {
                     throw new Exception();
                 } catch (Exception e) {
-                    System.out.println("в римской системе нет отрицательных чисел");
+                    System.out.println("В римской системе нет отрицательных чисел");
                 }
             } else if ((firstOperand - secondOperand == 0) && operator.equals("-")) {
                 try {
                     throw new Exception();
                 } catch (Exception e) {
-                    System.out.println("в римской системе ответ не может быть меньше единицы");
+                    System.out.println("В римской системе ответ не может быть меньше единицы");
                 }
             } else {
                 System.out.println(encoder(mathOperation(firstOperand, secondOperand, operator)));
@@ -172,7 +172,7 @@ public class Calculator {
             try {
                 throw new Exception();
             } catch (Exception e) {
-                System.out.println("используются одновременно разные системы счисления");
+                System.out.println("Используются одновременно разные системы счисления");
             }
         } else {
             firstOperand = getIntArgument(arguments[0]);
@@ -181,7 +181,7 @@ public class Calculator {
                 try {
                     throw new Exception();
                 } catch (Exception e) {
-                    System.out.println("на ноль делить нельзя");
+                    System.out.println("На ноль делить нельзя");
                 }
             } else {
                 System.out.println(mathOperation(firstOperand, secondOperand, operator));
