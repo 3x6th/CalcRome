@@ -119,15 +119,41 @@ public class Calculator {
         return value;
     }
 
+    public static String encoder (int result) {
+        int[] values = {100, 90, 50, 40, 10, 9, 5, 4, 1};
+        String[] romes = {"C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
+        String romeResult = "";
+
+        for (int i = 0; i < 9; i++) {
+            while (result >= values[i]) {
+                result -= values[i];
+                romeResult = romeResult.concat(romes[i]);
+            }
+        }
+        return romeResult;
+    }
+
     public static int result (String[] arguments, String operator) {
         int result = 0;
         int flagFirst = decoder(arguments[0]);
         int flagSecond = decoder(arguments[1]);
-        int firstOperand;
-        int secondOperand;
+        int firstOperand = -1;
+        int secondOperand = -1;
         if (flagFirst > 0 && flagSecond > 0) {
             firstOperand = decoder(arguments[0]);
             secondOperand = decoder(arguments[1]);
+        } else if (flagFirst > 0 && getIntArgument(arguments[1]) > -1) {
+            try {
+                throw new Exception();
+            } catch (Exception e) {
+                System.out.println("используются одновременно разные системы счисления");
+            }
+        } else if (flagSecond > 0 && getIntArgument(arguments[0]) > -1){
+            try {
+                throw new Exception();
+            } catch (Exception e) {
+                System.out.println("используются одновременно разные системы счисления");
+            }
         } else {
             firstOperand = getIntArgument(arguments[0]);
             secondOperand = getIntArgument(arguments[1]);
@@ -138,6 +164,7 @@ public class Calculator {
             case "*" -> result = firstOperand * secondOperand;
             case "/" -> result = firstOperand / secondOperand;
         }
+        System.out.println(encoder(result));
         return result;
     }
 }
