@@ -6,7 +6,6 @@ public class Calculator {
         Scanner scanner = new Scanner(System.in);
         String str = scanner.nextLine();
         str = str.replace(" ", "");
-        str = str.toUpperCase();
         String operator = getOperator(str);
         String[] arguments = getStringArguments(str, operator);
         try {
