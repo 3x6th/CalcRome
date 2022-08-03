@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 public class Calculator {
     public static void main(String[] args) {
+        System.out.println("Введите математическую операцию с одним оператором(+,-,*,/) и двумя операндами(0 - 10, I - X):");
         Scanner scanner = new Scanner(System.in);
         String str = scanner.nextLine();
         str = str.replace(" ", "");
@@ -9,7 +10,7 @@ public class Calculator {
         String operator = getOperator(str);
         String[] arguments = getStringArguments(str, operator);
         try {
-            System.out.println(result(arguments, operator));
+            getResult(arguments, operator);
         } catch (Exception e) {
             System.out.println("Результат вывести не удалось :)");
         }
@@ -34,7 +35,7 @@ public class Calculator {
         return arguments;
     }
 
-    public static int getIntArgument (String argument) {
+    public static int getIntArgument(String argument) {
         Integer operand = null;
         try {
             operand = Integer.valueOf(argument);
@@ -92,8 +93,7 @@ public class Calculator {
         return operator;
     }
 
-
-    public static int decoder (String argument) {
+    public static int decoder(String argument) {
         int value = 0;
         if ("I".equals(argument)) {
             value = 1;
@@ -119,7 +119,7 @@ public class Calculator {
         return value;
     }
 
-    public static String encoder (int result) {
+    public static String encoder(int result) {
         int[] values = {100, 90, 50, 40, 10, 9, 5, 4, 1};
         String[] romes = {"C", "XC", "L", "XL", "X", "IX", "V", "IV", "I"};
         String romeResult = "";
@@ -133,8 +133,18 @@ public class Calculator {
         return romeResult;
     }
 
-    public static int result (String[] arguments, String operator) {
+    public static int mathOperation(int firstOperand, int secondOperand, String operator) {
         int result = 0;
+        switch (operator) {
+            case "+" -> result = firstOperand + secondOperand;
+            case "-" -> result = firstOperand - secondOperand;
+            case "*" -> result = firstOperand * secondOperand;
+            case "/" -> result = firstOperand / secondOperand;
+        }
+        return result;
+    }
+
+    public static void getResult(String[] arguments, String operator) {
         int flagFirst = decoder(arguments[0]);
         int flagSecond = decoder(arguments[1]);
         int firstOperand = -1;
@@ -142,13 +152,23 @@ public class Calculator {
         if (flagFirst > 0 && flagSecond > 0) {
             firstOperand = decoder(arguments[0]);
             secondOperand = decoder(arguments[1]);
-        } else if (flagFirst > 0 && getIntArgument(arguments[1]) > -1) {
-            try {
-                throw new Exception();
-            } catch (Exception e) {
-                System.out.println("используются одновременно разные системы счисления");
+            if (firstOperand < secondOperand && operator.equals("-")) {
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    System.out.println("в римской системе нет отрицательных чисел");
+                }
+            } else if ((firstOperand - secondOperand == 0) && operator.equals("-")) {
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    System.out.println("в римской системе ответ не может быть меньше единицы");
+                }
+            } else {
+                System.out.println(encoder(mathOperation(firstOperand, secondOperand, operator)));
             }
-        } else if (flagSecond > 0 && getIntArgument(arguments[0]) > -1){
+        } else if ((flagFirst > 0 && getIntArgument(arguments[1]) > -1)
+                || (flagSecond > 0 && getIntArgument(arguments[0]) > -1)) {
             try {
                 throw new Exception();
             } catch (Exception e) {
@@ -157,14 +177,15 @@ public class Calculator {
         } else {
             firstOperand = getIntArgument(arguments[0]);
             secondOperand = getIntArgument(arguments[1]);
+            if (operator.equals("/") && secondOperand == 0) {
+                try {
+                    throw new Exception();
+                } catch (Exception e) {
+                    System.out.println("на ноль делить нельзя");
+                }
+            } else {
+                System.out.println(mathOperation(firstOperand, secondOperand, operator));
+            }
         }
-        switch (operator) {
-            case "+" -> result = firstOperand + secondOperand;
-            case "-" -> result = firstOperand - secondOperand;
-            case "*" -> result = firstOperand * secondOperand;
-            case "/" -> result = firstOperand / secondOperand;
-        }
-        System.out.println(encoder(result));
-        return result;
     }
 }
